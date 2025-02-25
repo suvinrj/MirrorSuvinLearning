@@ -14,6 +14,31 @@ public class PlayerCustomization : NetworkBehaviour
 
     private CharacterRandomizer characterRandomizer;
 
+     public override void OnStartClient()
+    {
+        base.OnStartClient();
+        characterRandomizer = GetComponent<CharacterRandomizer>();
+
+        if (isLocalPlayer)
+        {
+            ApplyCharacterCustomization();
+        }
+    }
+
+    void ApplyCharacterCustomization()
+    {
+        int race = PlayerPrefs.GetInt("SelectedRace", 0);
+        int gender = PlayerPrefs.GetInt("SelectedGender", 0);
+        int hair = PlayerPrefs.GetInt("SelectedHair", 0);
+        int armor = PlayerPrefs.GetInt("SelectedArmor", 0);
+
+        Debug.Log($"🎮 Applying Game Character: Race={race}, Gender={gender}, Hair={hair}, Armor={armor}");
+
+        // Apply character model
+        characterRandomizer.SetCharacter(race, gender, hair, armor);
+    }
+
+
     private void Start()
     {
         if (isLocalPlayer)
@@ -22,28 +47,37 @@ public class PlayerCustomization : NetworkBehaviour
         }
 
         characterRandomizer = GetComponent<CharacterRandomizer>();
-        ApplyCustomization();
+        ApplyCustomization(); // ✅ Apply customization when the game starts
     }
 
     [Command]
-    public void CmdSetCustomization(int race, int gender, int hair, int armor)
-    {
-        selectedRace = race;
-        selectedGender = gender;
-        selectedHair = hair;
-        selectedArmor = armor;
 
-        RpcApplyCustomization(selectedRace, selectedGender, selectedHair, selectedArmor);
-    }
+public void CmdSetCustomization(int race, int gender, int hair, int armor)
+{
+    selectedRace = race;
+    selectedGender = gender;
+    selectedHair = hair;
+    selectedArmor = armor;
+
+    Debug.Log($"🔄 Syncing Customization: Race={race}, Gender={gender}, Hair={hair}, Armor={armor}");
+
+    RpcApplyCustomization(selectedRace, selectedGender, selectedHair, selectedArmor);
+}
 
     [ClientRpc]
     void RpcApplyCustomization(int race, int gender, int hair, int armor)
     {
-        characterRandomizer.SetCharacter(race, gender, hair, armor);
+        if (characterRandomizer != null)
+        {
+            characterRandomizer.SetCharacter(race, gender, hair, armor);
+        }
     }
 
     void ApplyCustomization()
     {
-        characterRandomizer.SetCharacter(selectedRace, selectedGender, selectedHair, selectedArmor);
+        if (characterRandomizer != null)
+        {
+            characterRandomizer.SetCharacter(selectedRace, selectedGender, selectedHair, selectedArmor);
+        }
     }
 }

@@ -106,6 +106,17 @@ namespace PsychoticLab
             // rebuild all lists
             BuildLists();
 
+             Debug.Log($"👤 Hair Options Available: {allGender.all_Hair.Count}");
+    Debug.Log($"🛡 Armor Options Available: {allGender.chest_Attachment.Count}");
+
+    if (allGender.all_Hair.Count == 0)
+        Debug.LogError("🚨 No Hair Found! Check if Hair objects exist in the scene.");
+
+    if (allGender.chest_Attachment.Count == 0)
+        Debug.LogError("🚨 No Armor Found! Check if Armor objects exist in the scene.");
+
+
+
             // disable any enabled objects before clear
             if (enabledObjects.Count != 0)
             {
@@ -471,7 +482,7 @@ public void RandomizeCharacter()
             ActivateItem(objectListLeft[index]);
         }
 
-        public void SetCharacter(int race, int gender, int hair, int armor)
+public void SetCharacter(int race, int gender, int hair, int armor)
 {
     // Disable previous active objects
     foreach (GameObject g in enabledObjects)
@@ -480,22 +491,108 @@ public void RandomizeCharacter()
     }
     enabledObjects.Clear();
 
-    // Apply race
+    Debug.Log($"🔄 Applying Customization: Race={race}, Gender={gender}, Hair={hair}, Armor={armor}");
+
+    // **Apply Race (Human/Elf)**
     if (race == 0) ActivateItem(male.headAllElements[0]); // Human
     else ActivateItem(female.headAllElements[0]); // Elf
 
-    // Apply gender
-    if (gender == 0) ActivateItem(male.torso[0]); // Male
-    else ActivateItem(female.torso[0]); // Female
+    // **Apply Gender (Male/Female)**
+    if (gender == 0) // Male
+    {
+        ActivateItem(male.torso[0]);
+        ActivateItem(male.arm_Upper_Right[0]);
+        ActivateItem(male.arm_Upper_Left[0]);
+        ActivateItem(male.arm_Lower_Right[0]);
+        ActivateItem(male.arm_Lower_Left[0]);
+        ActivateItem(male.hand_Right[0]);
+        ActivateItem(male.hand_Left[0]);
+        ActivateItem(male.hips[0]);
+        ActivateItem(male.leg_Right[0]);
+        ActivateItem(male.leg_Left[0]);
+    }
+    else // Female
+    {
+        ActivateItem(female.torso[0]);
+        ActivateItem(female.arm_Upper_Right[0]);
+        ActivateItem(female.arm_Upper_Left[0]);
+        ActivateItem(female.arm_Lower_Right[0]);
+        ActivateItem(female.arm_Lower_Left[0]);
+        ActivateItem(female.hand_Right[0]);
+        ActivateItem(female.hand_Left[0]);
+        ActivateItem(female.hips[0]);
+        ActivateItem(female.leg_Right[0]);
+        ActivateItem(female.leg_Left[0]);
+    }
 
-    // Apply hair
-    ActivateItem(allGender.all_Hair[hair]);
+    // **Apply Hair**
+    Debug.Log($"👤 Hair Options Available: {allGender.all_Hair.Count}");
+    if (allGender.all_Hair.Count > 0 && hair < allGender.all_Hair.Count)
+    {
+        ActivateItem(allGender.all_Hair[hair]);
+        Debug.Log($"✔️ Hair Applied: {hair}");
+    }
+    else
+    {
+        Debug.LogWarning("⚠️ Hair selection out of range or missing!");
+    }
 
-    // Apply armor
-    ActivateItem(allGender.chest_Attachment[armor]);
+    // **Apply Armor (Hardcoded)**
+    Debug.Log($"🛡 Armor Options Available: {allGender.chest_Attachment.Count}");
+
+    if (allGender.chest_Attachment.Count > 0)
+    {
+        switch (armor)
+        {
+            case 0: ActivateItem(allGender.chest_Attachment[0]); break; // Light Cloth
+            case 1: ActivateItem(allGender.chest_Attachment[1]); break; // Leather Armor
+            case 2: ActivateItem(allGender.chest_Attachment[2]); break; // Padded Armor
+            case 3: ActivateItem(allGender.chest_Attachment[3]); break; // Chainmail
+            case 4: ActivateItem(allGender.chest_Attachment[4]); break; // Scale Armor
+            case 5: ActivateItem(allGender.chest_Attachment[5]); break; // Knight Plate
+            case 6: ActivateItem(allGender.chest_Attachment[6]); break; // Heavy Plate Armor
+            case 7: ActivateItem(allGender.chest_Attachment[7]); break; // Royal Guard Armor
+            case 8: ActivateItem(allGender.chest_Attachment[8]); break; // Battle Mage Robes
+            case 9: ActivateItem(allGender.chest_Attachment[9]); break; // Assassin Outfit
+            case 10: ActivateItem(allGender.chest_Attachment[10]); break; // Ranger Gear
+            case 11: ActivateItem(allGender.chest_Attachment[11]); break; // Paladin Armor
+            case 12: ActivateItem(allGender.chest_Attachment[12]); break; // Barbarian Chestpiece
+            case 13: ActivateItem(allGender.chest_Attachment[13]); break; // Monk Robes
+            case 14: ActivateItem(allGender.chest_Attachment[14]); break; // Dark Sorcerer Cloak
+            case 15: ActivateItem(allGender.chest_Attachment[15]); break; // Samurai Armor
+            case 16: ActivateItem(allGender.chest_Attachment[16]); break; // Gladiator Gear
+            case 17: ActivateItem(allGender.chest_Attachment[17]); break; // Berserker Tunic
+            case 18: ActivateItem(allGender.chest_Attachment[18]); break; // Druid Robes
+            case 19: ActivateItem(allGender.chest_Attachment[19]); break; // Dragon Scale Armor
+            case 20: ActivateItem(allGender.chest_Attachment[20]); break; // Warlord Chestplate
+            case 21: ActivateItem(allGender.chest_Attachment[21]); break; // Elite Knight Armor
+            case 22: ActivateItem(allGender.chest_Attachment[22]); break; // Viking Battle Gear
+            case 23: ActivateItem(allGender.chest_Attachment[23]); break; // Templar Outfit
+            case 24: ActivateItem(allGender.chest_Attachment[24]); break; // Shadow Rogue Attire
+            case 25: ActivateItem(allGender.chest_Attachment[25]); break; // Necromancer Robes
+            case 26: ActivateItem(allGender.chest_Attachment[26]); break; // Shamanic Attire
+            case 27: ActivateItem(allGender.chest_Attachment[27]); break; // Nomad Outfit
+            case 28: ActivateItem(allGender.chest_Attachment[28]); break; // Arcane Enchanter Robes
+            case 29: ActivateItem(allGender.chest_Attachment[29]); break; // Royal Noble Attire
+            case 30: ActivateItem(allGender.chest_Attachment[30]); break; // Spartan Warrior Chestpiece
+            default: Debug.LogWarning($"⚠️ Armor index {armor} is out of range!"); break;
+        }
+
+        Debug.Log($"✔️ Armor Applied: {armor}");
+    }
+    else
+    {
+        Debug.LogError("🚨 No Armor Options Available in allGender.chest_Attachment!");
+    }
 
     Debug.Log($"✅ Customization Applied: Race={race}, Gender={gender}, Hair={hair}, Armor={armor}");
 }
+
+
+
+
+
+
 
 
 
@@ -529,6 +626,11 @@ public void RandomizeCharacter()
         // build all item lists for use in randomization
         private void BuildLists()
         {
+
+// Ensure chest armor pieces are properly collected
+BuildList(allGender.chest_Attachment, "All_03_Chest_Attachment");
+
+            
             //build out male lists
             BuildList(male.headAllElements, "Male_Head_All_Elements");
             BuildList(male.headNoElements, "Male_Head_No_Elements");
@@ -577,6 +679,8 @@ public void RandomizeCharacter()
             BuildList(allGender.knee_Attachement_Right, "All_10_Knee_Attachement_Right");
             BuildList(allGender.knee_Attachement_Left, "All_11_Knee_Attachement_Left");
             BuildList(allGender.elf_Ear, "Elf_Ear");
+
+            
         }
 
         // called from the BuildLists method
