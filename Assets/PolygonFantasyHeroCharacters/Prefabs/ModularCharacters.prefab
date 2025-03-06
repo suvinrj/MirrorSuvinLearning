@@ -43417,7 +43417,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2cdbfc6c2aec83a41823be033c18ed4c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  repeatOnPlay: 1
+  repeatOnPlay: 0
   shuffleSpeed: 0.7
   mat: {fileID: 2100000, guid: ea128b040f8b0af4c9d2de400aaff30a, type: 2}
   primary:

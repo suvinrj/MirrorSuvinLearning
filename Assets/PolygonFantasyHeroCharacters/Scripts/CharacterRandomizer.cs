@@ -106,14 +106,9 @@ namespace PsychoticLab
             // rebuild all lists
             BuildLists();
 
-             Debug.Log($"👤 Hair Options Available: {allGender.all_Hair.Count}");
-    Debug.Log($"🛡 Armor Options Available: {allGender.chest_Attachment.Count}");
-
     if (allGender.all_Hair.Count == 0)
-        Debug.LogError("🚨 No Hair Found! Check if Hair objects exist in the scene.");
 
     if (allGender.chest_Attachment.Count == 0)
-        Debug.LogError("🚨 No Armor Found! Check if Armor objects exist in the scene.");
 
 
 
@@ -148,18 +143,19 @@ namespace PsychoticLab
             Transform cam = Camera.main.transform;
             if(cam)
             {
-                cam.position = transform.position + new Vector3(0, 0.3f, 2);
-                cam.rotation = Quaternion.Euler(0, -180, 0);
-                camHolder = new GameObject().transform;
-                camHolder.position = transform.position + new Vector3(0, 1, 0);
-                cam.LookAt(camHolder);
-                cam.SetParent(camHolder);
+               // cam.position = transform.position + new Vector3(0, 0.3f, 2);
+              //  cam.rotation = Quaternion.Euler(0, -180, 0);
+           //     camHolder = new GameObject().transform;
+             //   camHolder.position = transform.position + new Vector3(0, 1, 0);
+               // cam.LookAt(camHolder);
+             //   cam.SetParent(camHolder);
             }
 
             // if repeat on play is checked in the inspector, repeat the randomize method based on the shuffle speed, also defined in the inspector
             if (repeatOnPlay)
                 InvokeRepeating("Randomize", shuffleSpeed, shuffleSpeed);
         }
+
 
 public void RandomizeCharacter()
 {
@@ -525,17 +521,18 @@ public void SetCharacter(int race, int gender, int hair, int armor)
         ActivateItem(female.leg_Left[0]);
     }
 
-    // **Apply Hair**
+     // **Apply Hair**
     Debug.Log($"👤 Hair Options Available: {allGender.all_Hair.Count}");
     if (allGender.all_Hair.Count > 0 && hair < allGender.all_Hair.Count)
     {
-        ActivateItem(allGender.all_Hair[hair]);
+        ActivateItem(allGender.all_Hair[hair]); // ✅ Now applies hair correctly
         Debug.Log($"✔️ Hair Applied: {hair}");
     }
     else
     {
         Debug.LogWarning("⚠️ Hair selection out of range or missing!");
     }
+
 
     // **Apply Armor (Hardcoded)**
     Debug.Log($"🛡 Armor Options Available: {allGender.chest_Attachment.Count}");
@@ -580,10 +577,7 @@ public void SetCharacter(int race, int gender, int hair, int armor)
 
         Debug.Log($"✔️ Armor Applied: {armor}");
     }
-    else
-    {
-        Debug.LogError("🚨 No Armor Options Available in allGender.chest_Attachment!");
-    }
+   
 
     Debug.Log($"✅ Customization Applied: Race={race}, Gender={gender}, Hair={hair}, Armor={armor}");
 }
@@ -680,7 +674,10 @@ BuildList(allGender.chest_Attachment, "All_03_Chest_Attachment");
             BuildList(allGender.knee_Attachement_Left, "All_11_Knee_Attachement_Left");
             BuildList(allGender.elf_Ear, "Elf_Ear");
 
-            
+            // ✅ Build armor list for Male & Female
+            BuildList(male.armor, "Male_03_Torso"); // Male Armor
+            BuildList(female.armor, "Female_03_Torso"); // Female Armor
+
         }
 
         // called from the BuildLists method
@@ -728,23 +725,29 @@ BuildList(allGender.chest_Attachment, "All_03_Chest_Attachment");
 
     // classe for keeping the lists organized, allows for simple switching from male/female objects
     [System.Serializable]
-    public class CharacterObjectGroups
-    {
-        public List<GameObject> headAllElements;
-        public List<GameObject> headNoElements;
-        public List<GameObject> eyebrow;
-        public List<GameObject> facialHair;
-        public List<GameObject> torso;
-        public List<GameObject> arm_Upper_Right;
-        public List<GameObject> arm_Upper_Left;
-        public List<GameObject> arm_Lower_Right;
-        public List<GameObject> arm_Lower_Left;
-        public List<GameObject> hand_Right;
-        public List<GameObject> hand_Left;
-        public List<GameObject> hips;
-        public List<GameObject> leg_Right;
-        public List<GameObject> leg_Left;
-    }
+public class CharacterObjectGroups
+{
+    public List<GameObject> headAllElements;
+    public List<GameObject> headNoElements;
+    public List<GameObject> eyebrow;
+    public List<GameObject> facialHair;
+    public List<GameObject> torso;
+    public List<GameObject> arm_Upper_Right;
+    public List<GameObject> arm_Upper_Left;
+    public List<GameObject> arm_Lower_Right;
+    public List<GameObject> arm_Lower_Left;
+    public List<GameObject> hand_Right;
+    public List<GameObject> hand_Left;
+    public List<GameObject> hips;
+    public List<GameObject> leg_Right;
+    public List<GameObject> leg_Left;
+
+    // ✅ ADD THIS: Hair list for Male & Female
+    public List<GameObject> hair;
+
+    public List<GameObject> armor;
+}
+
 
     // classe for keeping the lists organized, allows for organization of the all gender items
     [System.Serializable]
